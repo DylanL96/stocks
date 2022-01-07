@@ -8,24 +8,27 @@ const Pagination = () => {
   const [data, setData] = useState([]);
   const [perPage] = useState(10);
   const [pageCount, setPageCount] = useState(0)
-  
 
-  const getData = async() => {
-      const res = await axios.get(`https://finnhub.io/api/v1/stock/symbol?exchange=US&token=${API_KEY}`);
-      const data = res.data;
+  useEffect(() => {
+    axios.get(`https://finnhub.io/api/v1/stock/symbol?exchange=US&token=${API_KEY}`)
+    .then(response => {
+      const data = response.data;
       const slice = data.slice(offset, offset + perPage)
       setData(slice)
       setPageCount(Math.ceil(data.length / perPage))
-  }
+    })
+    .catch(error => {
+      console.log(error)
+    })
+  }, [offset, perPage])
+  
   const handlePageClick = (e) => {
     const selectedPage = e.selected;
     console.log('selectedPage', selectedPage)
     setOffset(selectedPage + 1)
 };
 
- useEffect(() => {
-   getData()
- }, [offset])
+
   return(
     <div className="App">
       {data.map(d=><p key={d.displaySymbol}>{d.symbol}</p>)}
