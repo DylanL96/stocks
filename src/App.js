@@ -1,8 +1,10 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
-import Pagination from './components/Pagination';
 import {API_KEY} from './utils/config';
+import Pagination from './components/Pagination';
+import SearchFilter from './components/SearchFilter';
 import Chart from './components/Chart';
+import Test from './components/Test';
 
 const App = () => {
   const [offset, setOffset] = useState(0);
@@ -11,6 +13,8 @@ const App = () => {
   const [pageCount, setPageCount] = useState(0);
   const [search, setSearch] = useState('');
   const [name, setName] = useState('');
+
+  const [testSearch, setTestSearch] = useState('');
 
   useEffect(() => {
     // use later
@@ -25,12 +29,12 @@ const App = () => {
     .catch(error => {
       console.log(error)
     })
-  }, [offset, perPage])
+  }, [offset, perPage]);
 
 // handle pagination buttons
 const handlePageClick = e => {
   const selectedPage = e.selected;
-  console.log('selectedPage', selectedPage)
+  // console.log('selectedPage', selectedPage)
   setOffset(selectedPage + 1)
 };
 
@@ -40,25 +44,15 @@ const handleChange = e => {
   setName(e.target.value)
 };
 
-// handle form submit
-const handleSubmit = e => {
-  e.preventDefault();
-  setName(e.target.value)
-}
-
 const filteredTickers = data.filter(dataFiltered => dataFiltered.name.toLowerCase().includes(search.toLowerCase()))
 
 
   return(
     <div className="App">
-      <div className="ticker-search">
-        <h1>Search a Ticker!</h1>
-        <form onSubmit={handleSubmit}>
-          <input className="ticker-input" placeholder="search" onChange={handleChange}/>
-        </form>
-      </div>
-     <Pagination data={data} pageCount={pageCount} offset={offset} handlePageClick={handlePageClick} filteredTickers={filteredTickers}/>
-     <Chart name={name}/>
+      <SearchFilter handleChange={handleChange} name={name}/>
+      <Pagination data={data} pageCount={pageCount} offset={offset} handlePageClick={handlePageClick} filteredTickers={filteredTickers}/>
+      <Test testSearch={testSearch} setTestSearch={setTestSearch}/>
+     {/* <Chart name={name}/> */}
     </div>
   )
 };
