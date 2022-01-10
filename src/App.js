@@ -1,7 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import Pagination from './components/Pagination';
-import {API_KEY} from './utils/config'
+import {API_KEY} from './utils/config';
+import Chart from './components/Chart';
 
 const App = () => {
   const [offset, setOffset] = useState(0);
@@ -9,6 +10,7 @@ const App = () => {
   const [perPage] = useState(10);
   const [pageCount, setPageCount] = useState(0);
   const [search, setSearch] = useState('');
+  const [name, setName] = useState('');
 
   useEffect(() => {
     // use later
@@ -25,15 +27,23 @@ const App = () => {
     })
   }, [offset, perPage])
 
-  const handlePageClick = e => {
-    const selectedPage = e.selected;
-    console.log('selectedPage', selectedPage)
-    setOffset(selectedPage + 1)
+// handle pagination buttons
+const handlePageClick = e => {
+  const selectedPage = e.selected;
+  console.log('selectedPage', selectedPage)
+  setOffset(selectedPage + 1)
 };
 
+// handle search bar
 const handleChange = e => {
   setSearch(e.target.value);
-  console.log(e.target.value)
+  setName(e.target.value)
+};
+
+// handle form submit
+const handleSubmit = e => {
+  e.preventDefault();
+  setName(e.target.value)
 }
 
 const filteredTickers = data.filter(dataFiltered => dataFiltered.name.toLowerCase().includes(search.toLowerCase()))
@@ -43,9 +53,12 @@ const filteredTickers = data.filter(dataFiltered => dataFiltered.name.toLowerCas
     <div className="App">
       <div className="ticker-search">
         <h1>Search a Ticker!</h1>
-        <input className="ticker-input" placeholder="search" onChange={handleChange}/>
+        <form onSubmit={handleSubmit}>
+          <input className="ticker-input" placeholder="search" onChange={handleChange}/>
+        </form>
       </div>
      <Pagination data={data} pageCount={pageCount} offset={offset} handlePageClick={handlePageClick} filteredTickers={filteredTickers}/>
+     <Chart name={name}/>
     </div>
   )
 };

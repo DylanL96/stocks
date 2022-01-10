@@ -2,7 +2,7 @@ import React from 'react';
 import ReactPaginate from 'react-paginate';
 
 const Pagination = ({data, pageCount, offset, handlePageClick, filteredTickers}) => {
-  console.log(filteredTickers)
+  // console.log(filteredTickers)
 
   return(
   <div>{filteredTickers.length > 0 ? (
