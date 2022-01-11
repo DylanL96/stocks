@@ -1,8 +1,9 @@
 import React, {useEffect} from 'react';
 import axios from 'axios';
+import Chart from '../components/Chart';
 
 const Test = ({testSearch, setTestSearch}) => {
-  console.log('testSearch: ', testSearch)
+  // console.log('testSearch: ', testSearch)
 
   // get the data from the API from what the user input
   const getData = () => {
@@ -23,8 +24,9 @@ const Test = ({testSearch, setTestSearch}) => {
   
   return (
      <div className="TEST-DIV">
-       <input onBlur={e => setTestSearch(e.target.value)} placeholder="search a ticker"/>
+       <input id="ticker-search" onBlur={e => setTestSearch(e.target.value)} placeholder="search a ticker"/>
        <button onClick={getData}>Search!</button>
+       <Chart testSearch={testSearch}/>
      </div>
   )
 };

@@ -1,32 +1,18 @@
 import React from 'react';
 import ReactPaginate from 'react-paginate';
 
-const Pagination = ({pageCount, handlePageClick, filteredTickers}) => {
-  // console.log(filteredTickers)
+const Pagination = ({pageCount, handlePageClick, filteredTickers, name}) => {
 
   return(
   <div>{filteredTickers.length > 0 ? (
     <div className="ticker-container">
-      <div className="ticker-header">
-        <p>Company Name</p>
-        <p>Ticker</p>
-        <p>Stock Exchange</p>
-        <p>Country</p>
-      </div>
       {filteredTickers.map(d=>
         <div className="ticker-row" key={d.symbol}>
-          <div className="ticker">
-            <h3>{d.name}</h3>
-          </div>
-          <div className="ticker-symbol">
+            <h3>{d.name}</h3>         
             <h3>{d.symbol}</h3>
-          </div>
-          <div className="ticker-exchange">
             <h3>{d.stock_exchange.name}</h3>
-          </div>
-          <div className="ticker-country">
             <h3>{d.stock_exchange.country}</h3>
-          </div>
+            <a className="btn btn-outline-light" href={`/${d.symbol}`}>Read more</a>
         </div>)}
       <ReactPaginate
                 previousLabel={"prev"}
